@@ -5,8 +5,36 @@
     <title>Title</title>
     <script src="scripts/jquery-3.2.1.js"></script>
     <script src="scripts/golf.js"></script>
+    <style>
+        .column{
+            border: 1px solid #ccc;
+            width: 30px;
+            min-height: 70px;
+        }
+        .score-column{
+            display: flex;
+        }
+    </style>
 </head>
 <body onload="loadMe()">
+    <div class="container">
+        <select id="course-select" onchange="getCourse(this.value)">
 
+        </select>
+
+        <select id="tee-select" onchange="buildCard(this.value)">
+
+        </select>
+    </div>
+
+    <div class="card">
+        <div class="player-column">
+
+        </div>
+
+        <div class="score-column">
+
+        </div>
+    </div>
 </body>
 </html>

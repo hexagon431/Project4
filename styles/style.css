@@ -1,0 +1,40 @@
+.column{
+    border: 1px solid #ccc;
+    width: 40px;
+    min-height: 70px;
+}
+.score-column{
+    display: flex;
+}
+.player-column{
+    margin-top: 40px;
+
+}
+.score-card{
+    display: flex;
+}
+
+body{
+    background-image: url("../images/course.jpg");
+    overflow: hidden;
+}
+
+.navbar{
+    background-color: #106410;
+    border-color: black;
+}
+
+.score-card-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.score-card{
+    width: 80%;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
+    background-color: rgba(247, 247, 247, 0.80);
+    /*border: 1px solid black;*/
+    overflow: hidden;
+}

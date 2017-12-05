@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="cdn/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
     <script src="scripts/jquery-3.2.1.js"></script>
     <script src="scripts/golf.js"></script>
-    <style>
-        .column{
-            border: 1px solid #ccc;
-            width: 30px;
-            min-height: 70px;
-        }
-        .score-column{
-            display: flex;
-        }
-    </style>
 </head>
-<body onload="loadMe()">
-    <div class="container">
-        <select id="course-select" onchange="getCourse(this.value)">
+<body onload="loadCourses()">
 
-        </select>
-
-        <select id="tee-select" onchange="buildCard(this.value)">
-
-        </select>
-    </div>
-
-    <div class="card">
-        <div class="player-column">
-
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <img class="navbar-brand" href="#" src="images/golf-ball.png">
         </div>
 
-        <div class="score-column">
+    </nav>
 
+    <div class="score-card-container">
+        <div class="selector-container">
+            <select id="course-select" onchange="getCourse(this.value)">
+
+            </select>
+
+            <select id="tee-select" onchange="buildCard(this.value)">
+
+            </select>
+        </div>
+
+        <div class="score-card">
+            <div class="player-column">
+
+            </div>
+
+            <div class="score-column">
+
+            </div>
         </div>
     </div>
+
 </body>
 </html>

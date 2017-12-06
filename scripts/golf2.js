@@ -35,7 +35,7 @@ function buildCard(tee){
 
     for (var c in numholes){
         var holepar = currentCourse.course.holes[c].tee_boxes[tee].par;
-        $(".score-column").append("<div id='column"+ (Number(c) + 1) +"' class='column'><div>Hole "+ (c + 1) +"</div>Par " + holepar + "</div>")
+        $(".score-column").append("<div id='column"+ (Number(c) + 1) +"' class='column'><div>Hole "+ (Number(c) + 1) +"</div>Par " + holepar + "</div>")
     }
     $(".score-column").append("<div class='score-total column'></div>")
 

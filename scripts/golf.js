@@ -1,6 +1,7 @@
 var closeCourses;
 var currentCourse;
-var local_obj = {latitude: 40.4426135, longitude: -111.8631116, radius: 100};
+//var local_obj = {latitude: 40.4426135, longitude: -111.8631116, radius: 100};
+var local_obj;
 var numholes;
 var numplayers = 4;
 
@@ -37,7 +38,7 @@ function buildCard(tee){
         var holepar = currentCourse.course.holes[c].tee_boxes[tee].par;
         $(".score-column").append("<div id='column"+ (Number(c) + 1) +"' class='column'><div>Hole "+ (Number(c) + 1) +"</div>Par " + holepar + "</div>")
     }
-    $(".score-column").append("<div class='score-total column'></div>")
+    $(".score-column").append("<div class='score-total column'>Total Score</div>")
 
     fillCard();
 }
@@ -57,4 +58,27 @@ function deletePlayer(playerId){
     for(var h=1; h<=numholes.length; h++){
         $("#player" + playerId + "hole" + h).remove();
     }
+}
+
+function getCoordinatesFromZipCode(){
+    $("#ziperror").hide();
+
+    var zip = $("#zip").val();
+    var rad = Number($("#radius").val());
+
+    if (zip > 10000 && zip < 99999 && zip != null && rad != null){
+        $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyD_NPHIrLEEXMzX6539FOKx_1WSBkd8zVI", function(data, status){
+            console.log(data);
+
+            var lat = data.results[0].geometry.location.lat;
+            var lng = data.results[0].geometry.location.lng;
+
+            local_obj = {latitude: lat, longitude: lng, radius: rad};
+            loadCourses();
+        });
+    }
+    else{
+        $("#ziperror").show();
+    }
+
 }

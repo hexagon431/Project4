@@ -38,3 +38,11 @@ body{
     /*border: 1px solid black;*/
     overflow: hidden;
 }
+
+.coord-and-radius{
+    display: flex;
+}
+
+.coord{
+    margin-right: 10px;
+}

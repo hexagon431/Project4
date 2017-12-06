@@ -18,7 +18,12 @@
     </nav>
 
     <div class="score-card-container">
-        <div class="selector-container">
+        <div class="coord-and-radius">
+            <div class="coord">Please enter your zip code: <input id="zip" placeholder="Ex: 12345"></div>
+            <div class="rad">Search for all courses within a <input id="radius" placeholder="Ex: 100"> mile radius</div>
+        </div>
+
+        <div class="selectors">
             <select id="course-select" onchange="getCourse(this.value)">
 
             </select>
@@ -27,6 +32,22 @@
 
             </select>
         </div>
+
+        <div class="course-details">
+            <div id="course-thumbnail">
+
+            </div>
+
+            <div id="course-name">
+
+            </div>
+
+            <div class="course-address">
+                <div id="address"></div>
+            </div>
+
+        </div>
+
 
         <div class="score-card">
             <div class="player-column">

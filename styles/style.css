@@ -1,15 +1,25 @@
+@font-face {
+    font-family: "Aprikas Regular";
+    src: url("../fonts/Aprikas_Regular.otf");
+}
+
 .column{
     border: 1px solid #ccc;
-    width: 40px;
+    width: 70px;
     min-height: 70px;
+    text-align:center;
 }
 .score-column{
     display: flex;
 }
+
 .player-column{
-    margin-top: 40px;
+    margin-top: 1px;
+    width: 90px;
+    text-align: center;
 
 }
+
 .score-card{
     display: flex;
 }
@@ -17,6 +27,8 @@
 body{
     background-image: url("../images/course.jpg");
     overflow: hidden;
+    font-family: "Aprikas Regular";
+    font-weight: bold;
 }
 
 .navbar{
@@ -36,7 +48,7 @@ body{
     box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
     background-color: rgba(247, 247, 247, 0.80);
     /*border: 1px solid black;*/
-    overflow: hidden;
+    overflow-x: scroll;
 }
 
 .coord-and-radius{
@@ -45,4 +57,58 @@ body{
 
 .coord{
     margin-right: 10px;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+score-column input[type=number] {
+    width: 20px;
+}
+
+.hole-input{
+    width: 100%;
+}
+
+.score-box{
+    width: 20px;
+}
+
+.row{
+    margin: 0 auto;
+    height: 26px;
+    border-bottom: 2px solid black;
+}
+
+#outtotals {
+    background-color: green;
+    color: white;
+}
+
+#intotals{
+    background-color: green;
+    color: white;
+}
+
+.holerow{
+    background-color: green;
+}
+
+.parrow{
+    background-color: maroon;
+}
+
+.yardrow{
+    background-color: #1b6d85;
+}
+
+.hcprow{
+    background-color: gold;
 }

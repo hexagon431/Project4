@@ -1,6 +1,5 @@
 var closeCourses;
 var currentCourse;
-//var local_obj = {latitude: 40.4426135, longitude: -111.8631116, radius: 100};
 var local_obj;
 var numholes;
 var numplayers = 4;
@@ -19,6 +18,9 @@ function loadCourses(){
 
 function getCourse(courseID){
     $("#tee-select").html("");
+    $("#tee-select").append("<option>-select tee type-</option>");
+    $("#course-select").append("<option>-select course-</option>");
+
     $.get("https://golf-courses-api.herokuapp.com/courses/" + courseID, function(data, status){
         currentCourse = JSON.parse(data);
         console.log(currentCourse);
@@ -31,24 +33,45 @@ function getCourse(courseID){
 }
 
 function buildCard(tee){
+    $(".score-card").html("<div class='player-column'></div><div class='score-column'></div>");
     numholes = currentCourse.course.holes;
-    console.log(numholes.length);
 
     for (var c in numholes){
         var holepar = currentCourse.course.holes[c].tee_boxes[tee].par;
-        $(".score-column").append("<div id='column"+ (Number(c) + 1) +"' class='column'><div>Hole "+ (Number(c) + 1) +"</div>Par " + holepar + "</div>")
+        var yardage = currentCourse.course.holes[c].tee_boxes[tee].yards;
+        var handicap = currentCourse.course.holes[c].tee_boxes[tee].hcp;
+        $(".score-column").append("<div id='column"+ (Number(c) + 1) +"' class='column'><div class='holerow row'>"+ (Number(c) + 1) +"</div><div class='parrow row'>" + holepar + "</div><div class='yardrow row'>" + yardage +"</div><div class='hcprow row'>" + handicap + "</div></div></div>");
+        if (c == 8){
+            $(".score-column").append("<div id='outtotals' class='outtotals column'>Out</div>")
+        }
+        else if (c == 17){
+            $(".score-column").append("<div id='intotals' class='intotals column'>In</div>")
+
+        }
     }
-    $(".score-column").append("<div class='score-total column'>Total Score</div>")
+    $(".score-column").append("<div class='score-total column'>Totals</div>")
 
     fillCard();
 }
 
 function fillCard(){
+    $(".player-column").append("<div class='holerow row'>Hole</div>");
+    $(".player-column").append("<div class='parrow row'>Par</div>");
+    $(".player-column").append("<div class='yardrow row'>Yards</div>");
+    $(".player-column").append("<div class='hcprow row'>Handicap</div>");
+
+
+
     for (var p = 1; p <= numplayers; p++){
-        $(".player-column").append("<div contenteditable='true' id='pl" + p + "'>Player</div>");
-        $(".score-column").append("<input type='text' id='total-hole" + p +"'>");
+        $(".player-column").append("<div contenteditable='true' id='pl" + p + "'>Player" + p + "</div>");
+        //$(".score-total").append("<input type='text' id='total-player" + p +"' class='score-box'>");
+
+        for(var l = 1; l<= numholes.length; l++){
+            $("#column" + h).append()
+        }
+
         for(var h = 1; h <= numholes.length; h++){
-            $("#column" + h).append("<input id='player" + (p+1) + "hole" + h +"' type='text' class='hole-input'/>");
+            $("#column" + h).append("<input id='player" + p + "hole" + h +"' type='text' class='hole-input'/>");
         }
     }
 }
@@ -66,6 +89,9 @@ function getCoordinatesFromZipCode(){
     var zip = $("#zip").val();
     var rad = Number($("#radius").val());
 
+    //convert from miles to kilometers
+    rad = rad * 1.609344;
+
     if (zip > 10000 && zip < 99999 && zip != null && rad != null){
         $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyD_NPHIrLEEXMzX6539FOKx_1WSBkd8zVI", function(data, status){
             console.log(data);
@@ -80,5 +106,9 @@ function getCoordinatesFromZipCode(){
     else{
         $("#ziperror").show();
     }
+
+}
+
+function validatePlayerNames(){
 
 }

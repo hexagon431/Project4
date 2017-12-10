@@ -6,6 +6,7 @@ var numplayers = 4;
 //this variable just keeps running total of how many players have been added so each new player gets a unique name
 var totalPlayerCount = 4;
 var currentTeeType;
+var usedNames = [];
 
 function loadCourses(){
     $("#course-select").html("");
@@ -24,7 +25,6 @@ function getCourse(courseID){
     $("#tee-select").append("<option id='tee-placeholder'>-select tee type-</option>");
     $(".pick-teetype").show();
     $("#course-placeholder").remove();
-    // $("#course-select").append("<option>-select course-</option>");
 
     $.get("https://golf-courses-api.herokuapp.com/courses/" + courseID, function(data, status){
         currentCourse = JSON.parse(data);
@@ -93,7 +93,7 @@ function fillCard(){
 
 
     for (var p = 1; p <= numplayers; p++){
-        $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div id='player" + p + "name' class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
+        $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div id='player" + p + "name' class='name-field' contenteditable='true' onblur='validatePlayerNames(" + p + ")'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
 
         for(var h = 1; h <= numholes.length; h++){
             $("#column" + h).append("<input id='player" + p + "hole" + h +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + p + ")'/>");
@@ -102,6 +102,10 @@ function fillCard(){
         $("#outtotals").append("<div id='player" + p + "outtotal' class='row'></div>");
         $("#intotals").append("<div id='player" + p + "intotal' class='row'></div>");
         $(".score-total").append("<div id='player" + p + "scoretotal' class='row'></div>");
+
+        let currentPlayer = {playerID: p, playerName: $("#player" + p + "name").text()};
+
+        usedNames.push(currentPlayer);
     }
 
 }
@@ -111,7 +115,7 @@ function addPlayer(){
     totalPlayerCount++;
     numplayers++;
 
-    $(".player-column").append("<div class='row player-name' id='pl" + totalPlayerCount + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)' id='player" + totalPlayerCount + "name'>Player" + totalPlayerCount + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + totalPlayerCount + ")' id='delete-button'></span></div>");
+    $(".player-column").append("<div class='row player-name' id='pl" + totalPlayerCount + "'><div class='name-field' contenteditable='true' onblur='validatePlayerNames(" + totalPlayerCount + ")' id='player" + totalPlayerCount + "name'>Player" + totalPlayerCount + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + totalPlayerCount + ")' id='delete-button'></span></div>");
 
     for(let o = 1; o <= numholes.length; o++){
         $("#column" + o).append("<input id='player" + totalPlayerCount + "hole" + o +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + totalPlayerCount + ")'/>");
@@ -124,6 +128,10 @@ function addPlayer(){
     if(numplayers < 4){
         $(".player-column").append("<a id='add-player-button'>Add Player +</a>")
     }
+
+    let currentPlayer = {playerID: totalPlayerCount, playerName: $("#player" + totalPlayerCount + "name").text()};
+
+    usedNames.push(currentPlayer);
 }
 
 function deletePlayer(playerId){
@@ -140,6 +148,9 @@ function deletePlayer(playerId){
 
     $(".player-column").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
 
+    let currentPlayer = {playerID: playerId, playerName: $("#player" + playerId + "name").text()};
+    let nameLocation = usedNames.indexOf(currentPlayer);
+    usedNames.splice(nameLocation,1);
 
 }
 
@@ -186,9 +197,32 @@ function getCoordinatesFromZipCode(){
 
 }
 
-function validatePlayerNames(pName){
+function validatePlayerNames(player){
+    $("#name-in-use").hide();
+
     console.log("beep boop, validatePlayerNames here");
-    console.log(pName);
+    let currentPlayer = {playerID: player, playerName: $("#player" + player + "name").text()};
+    console.log(currentPlayer);
+
+    for (let q in usedNames){
+        if(currentPlayer.playerID == usedNames[q].playerID){
+            usedNames[q].playerName = currentPlayer.playerName;
+            currentPlayer = usedNames[q];
+        }
+    }
+
+    for(let z in usedNames){
+        if(usedNames[z].playerID != currentPlayer.playerID && usedNames[z].playerName == currentPlayer.playerName){
+            //$(".results").append("<div class='alert alert-danger' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Name already in use. Please choose a different name.</div>");
+            $("#name-in-use").show();
+            $("#player" + player + "name").attr("tabindex", -1).focus();
+        }
+    }
+
+
+
+
+
 }
 
 function updatePlayerTotal(player){

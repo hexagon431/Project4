@@ -98,7 +98,7 @@ function fillCard(){
 
         $("#outtotals").append("<div id='player" + p + "outtotal' class='row'></div>");
         $("#intotals").append("<div id='player" + p + "intotal' class='row'></div>");
-        $(".score-column").append("<div id='player" + p + "scoretotal' class='row'></div>");
+        $(".score-total").append("<div id='player" + p + "scoretotal' class='row'></div>");
     }
 
 }
@@ -116,7 +116,7 @@ function addPlayer(){
 
     $("#outtotals").append("<div id='player" + totalPlayerCount + "outtotal' class='row'></div>");
     $("#intotals").append("<div id='player" + totalPlayerCount + "intotal' class='row'></div>");
-    $(".score-column").append("<div id='player" + totalPlayerCount + "scoretotal' class='row'></div>");
+    $(".score-total").append("<div id='player" + totalPlayerCount + "scoretotal' class='row'></div>");
 
     if(numplayers < 4){
         $(".player-column").append("<a id='add-player-button'>Add Player +</a>")

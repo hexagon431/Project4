@@ -165,3 +165,17 @@ score-column input[type=number] {
 #tee-select{
     width: 120px;
 }
+
+.navbar{
+    color: white;
+    font-size: 30px;
+    font-family: "Aprikas Regular";
+    font-weight: bold;
+}
+
+.results{
+    margin-top: 5px;
+    width: 80%;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
+    background-color: rgba(247, 247, 247, 0.80);
+}

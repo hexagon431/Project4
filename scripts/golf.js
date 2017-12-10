@@ -5,6 +5,7 @@ var numholes;
 var numplayers = 4;
 //this variable just keeps running total of how many players have been added so each new player gets a unique name
 var totalPlayerCount = 4;
+var currentTeeType;
 
 function loadCourses(){
     $("#course-select").html("");
@@ -39,6 +40,7 @@ function getCourse(courseID){
 function buildCard(tee){
     $(".score-card").html("<div class='player-column'></div><div class='score-column'></div>");
     numholes = currentCourse.course.holes;
+    currentTeeType = tee;
 
     $("#tee-placeholder").remove();
 
@@ -77,7 +79,7 @@ function buildCard(tee){
             $("#intotals").append("<div class='row'>" + inParTotal + "</div><div class='row'>" + inYardTotal + "</div><div class='row'>" + inHcpTotal + "</div>");
         }
     }
-    $(".score-column").append("<div class='score-total column'><div class='row'>Totals</div><div class='row'>" + (outParTotal + inParTotal) + "</div><div class='row'>" + (outYardTotal + inYardTotal) + "</div><div class='row'>" + (outHcpTotal + inHcpTotal) + "</div>");
+    $(".score-column").append("<div class='score-total column'><div class='row'>Totals</div><div class='row' id='total-par'>" + (outParTotal + inParTotal) + "</div><div class='row'>" + (outYardTotal + inYardTotal) + "</div><div class='row'>" + (outHcpTotal + inHcpTotal) + "</div>");
 
     fillCard();
 }
@@ -91,7 +93,7 @@ function fillCard(){
 
 
     for (var p = 1; p <= numplayers; p++){
-        $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
+        $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div id='player" + p + "name' class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
 
         for(var h = 1; h <= numholes.length; h++){
             $("#column" + h).append("<input id='player" + p + "hole" + h +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + p + ")'/>");
@@ -109,7 +111,7 @@ function addPlayer(){
     totalPlayerCount++;
     numplayers++;
 
-    $(".player-column").append("<div class='row player-name' id='pl" + totalPlayerCount + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + totalPlayerCount + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + totalPlayerCount + ")' id='delete-button'></span></div>");
+    $(".player-column").append("<div class='row player-name' id='pl" + totalPlayerCount + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)' id='player" + totalPlayerCount + "name'>Player" + totalPlayerCount + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + totalPlayerCount + ")' id='delete-button'></span></div>");
 
     for(let o = 1; o <= numholes.length; o++){
         $("#column" + o).append("<input id='player" + totalPlayerCount + "hole" + o +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + totalPlayerCount + ")'/>");
@@ -182,8 +184,6 @@ function getCoordinatesFromZipCode(){
 
     }
 
-
-
 }
 
 function validatePlayerNames(pName){
@@ -192,32 +192,58 @@ function validatePlayerNames(pName){
 }
 
 function updatePlayerTotal(player){
-    console.log("beep boop, updateplayertotal here");
-    console.log(player);
-
-
     let playerOutTotal = 0;
     let playerInTotal = 0;
 
+    let isGameComplete = false;
+
     for (let v = 1; v <= 9; v++){
-        console.log($("#player" + player + "hole"+ v).val());
         if($("#player" + player + "hole"+ v).val() != "") {
             playerOutTotal = playerOutTotal + parseInt($("#player" + player + "hole" + v).val());
-            console.log(playerOutTotal);
+            isGameComplete = true;
+        }
+        else{
+            isGameComplete = false;
         }
     }
     $("#player" + player + "outtotal").html(playerOutTotal);
 
-    for (let q = 9; q < 18; q++){
+    for (let q = 9; q <= 18; q++){
         if($("#player" + player + "hole"+ q).val() != "") {
             playerInTotal = playerInTotal + parseInt($("#player" + player + "hole" + q).val());
+            isGameComplete = true;
         }
+        else{
+            isGameComplete = false;
+        }
+
     }
+
+    let playerTotalScore = playerInTotal + playerOutTotal;
+
     $("#player" + player + "intotal").html(playerInTotal);
 
-    $("#player" + player + "scoretotal").html(playerInTotal + playerOutTotal);
+    $("#player" + player + "scoretotal").html(playerTotalScore);
+
+    if(isGameComplete){
+        displayScoreMessage(player, playerTotalScore);
+    }
 }
 
-function displayScoreMessage(player){
+function displayScoreMessage(player, pScore){
+    let coursePar = currentCourse.course.tee_types[currentTeeType].par;
+    let playerName = $("#player"+player+"name").text();
 
+
+
+    if(pScore <= coursePar){
+    $(".results").append("<div class='alert alert-success' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Congratulations " + playerName + "! You beat the par!</div>")
+
+    }
+    else{
+        $(".results").append("<div class='alert alert-warning' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Better luck next time " + playerName + "! Practice makes perfect!</div>")
+
+    }
+
+    $(".results").show();
 }

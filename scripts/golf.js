@@ -28,7 +28,6 @@ function getCourse(courseID){
 
     $.get("https://golf-courses-api.herokuapp.com/courses/" + courseID, function(data, status){
         currentCourse = JSON.parse(data);
-        console.log(currentCourse);
         for (var t in currentCourse.course.tee_types){
             var teename = currentCourse.course.tee_types[t].tee_type;
             $("#tee-select").append("<option value='" + t + "'>" + teename + "</option>");
@@ -90,8 +89,6 @@ function fillCard(){
     $(".player-column").append("<div class='yardrow row'>Yards</div>");
     $(".player-column").append("<div class='hcprow row'>Handicap</div>");
 
-
-
     for (var p = 1; p <= numplayers; p++){
         $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div id='player" + p + "name' class='name-field' contenteditable='true' onblur='validatePlayerNames(" + p + ")'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
 
@@ -107,7 +104,6 @@ function fillCard(){
 
         usedNames.push(currentPlayer);
     }
-
 }
 
 function addPlayer(){
@@ -155,10 +151,6 @@ function deletePlayer(playerId){
             usedNames.splice(r, 1);
         }
     }
-
-    //console.log(nameLocation);
-    //usedNames.splice(nameLocation,1);
-
 }
 
 function getCoordinatesFromZipCode(){
@@ -173,10 +165,7 @@ function getCoordinatesFromZipCode(){
 
     if (zip > 10000 && zip < 99999 && zip != 0 && rad != 0){
         $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyD_NPHIrLEEXMzX6539FOKx_1WSBkd8zVI", function(data, status){
-            console.log(status);
             if(status == "success") {
-                console.log(data);
-
                 var lat = data.results[0].geometry.location.lat;
                 var lng = data.results[0].geometry.location.lng;
 
@@ -199,17 +188,13 @@ function getCoordinatesFromZipCode(){
         else{
             $("#ziperror").show();
         }
-
     }
-
 }
 
 function validatePlayerNames(player){
     $("#name-in-use").hide();
 
-    console.log("beep boop, validatePlayerNames here");
     let currentPlayer = {playerID: player, playerName: $("#player" + player + "name").text()};
-    console.log(currentPlayer);
 
     for (let q in usedNames){
         if(currentPlayer.playerID == usedNames[q].playerID){
@@ -225,17 +210,11 @@ function validatePlayerNames(player){
             $("#player" + player + "name").attr("tabindex", -1).focus();
         }
     }
-
-
-
-
-
 }
 
 function updatePlayerTotal(player){
     let playerOutTotal = 0;
     let playerInTotal = 0;
-
     let isGameComplete = false;
 
     for (let v = 1; v <= 9; v++){
@@ -274,8 +253,6 @@ function updatePlayerTotal(player){
 function displayScoreMessage(player, pScore){
     let coursePar = currentCourse.course.tee_types[currentTeeType].par;
     let playerName = $("#player"+player+"name").text();
-
-
 
     if(pScore <= coursePar){
     $(".results").append("<div class='alert alert-success' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Congratulations " + playerName + "! You beat the par!</div>")

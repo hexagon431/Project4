@@ -140,6 +140,8 @@ score-column input[type=number] {
     border-radius: 3px;
     background-color: green;
     color: white;
+    padding: 3px;
+    margin-top: 5px;
 }
 
 .name-field{
@@ -186,4 +188,8 @@ score-column input[type=number] {
 
 .alert{
     margin-bottom: 0;
+}
+
+.add-button-container{
+    width: 80%;
 }

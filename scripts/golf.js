@@ -126,7 +126,7 @@ function addPlayer(){
     $(".score-total").append("<div id='player" + totalPlayerCount + "scoretotal' class='row'></div>");
 
     if(numplayers < 4){
-        $(".player-column").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
+        $(".add-button-container").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
     }
 
     let currentPlayer = {playerID: totalPlayerCount, playerName: $("#player" + totalPlayerCount + "name").text()};
@@ -148,11 +148,16 @@ function deletePlayer(playerId){
     $("#player" + playerId + "intotal").remove();
     $("#player" + playerId + "scoretotal").remove();
 
-    $(".player-column").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
+    $(".add-button-container").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
 
-    let currentPlayer = {playerID: playerId, playerName: $("#player" + playerId + "name").text()};
-    let nameLocation = usedNames.indexOf(currentPlayer);
-    usedNames.splice(nameLocation,1);
+    for(let r in usedNames){
+        if(usedNames[r].playerID == playerId){
+            usedNames.splice(r, 1);
+        }
+    }
+
+    //console.log(nameLocation);
+    //usedNames.splice(nameLocation,1);
 
 }
 

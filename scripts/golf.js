@@ -21,6 +21,7 @@ function loadCourses(){
 function getCourse(courseID){
     $("#tee-select").html("");
     $("#tee-select").append("<option id='tee-placeholder'>-select tee type-</option>");
+    $(".pick-teetype").show();
     $("#course-placeholder").remove();
     // $("#course-select").append("<option>-select course-</option>");
 
@@ -152,7 +153,8 @@ function getCoordinatesFromZipCode(){
 
     if (zip > 10000 && zip < 99999 && zip != 0 && rad != 0){
         $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyD_NPHIrLEEXMzX6539FOKx_1WSBkd8zVI", function(data, status){
-            if(status == "OK") {
+            console.log(status);
+            if(status == "success") {
                 console.log(data);
 
                 var lat = data.results[0].geometry.location.lat;

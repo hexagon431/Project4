@@ -63,6 +63,7 @@ body{
 
 .coord, .rad{
     margin-bottom: 5px;
+    text-align: center;
 }
 
 .coord{
@@ -145,4 +146,22 @@ score-column input[type=number] {
 
 #ziperror{
     margin-top: 5px;
+}
+
+.selectors{
+    width: 80%;
+    border: 1px solid black;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
+    background-color: rgba(247, 247, 247, 0.80);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#course-select{
+    width: 230px;
+}
+
+#tee-select{
+    width: 120px;
 }

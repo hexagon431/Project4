@@ -3,6 +3,8 @@ var currentCourse;
 var local_obj;
 var numholes;
 var numplayers = 4;
+//this variable just keeps running total of how many players have been added so each new player gets a unique name
+var totalPlayerCount = 4;
 
 function loadCourses(){
     $("#course-select").html("");
@@ -74,7 +76,7 @@ function buildCard(tee){
             $("#intotals").append("<div class='row'>" + inParTotal + "</div><div class='row'>" + inYardTotal + "</div><div class='row'>" + inHcpTotal + "</div>");
         }
     }
-    $(".score-column").append("<div class='score-total column'><div class='row'>Totals</div><div class='row'>" + (outParTotal + inParTotal) + "</div><div class='row'>" + (outYardTotal + inYardTotal) + "</div><div class='row'>" + (outHcpTotal + inHcpTotal) + "</div></div>");
+    $(".score-column").append("<div class='score-total column'><div class='row'>Totals</div><div class='row'>" + (outParTotal + inParTotal) + "</div><div class='row'>" + (outYardTotal + inYardTotal) + "</div><div class='row'>" + (outHcpTotal + inHcpTotal) + "</div>");
 
     fillCard();
 }
@@ -88,19 +90,54 @@ function fillCard(){
 
 
     for (var p = 1; p <= numplayers; p++){
-        $(".player-column").append("<div contenteditable='true' id='pl" + p + "' onchange='validatePlayerNames()'>Player" + p + "</div>");
+        $(".player-column").append("<div class='row player-name' id='pl" + p + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + p + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + p + ")' id='delete-button'></span></div>");
 
         for(var h = 1; h <= numholes.length; h++){
-            $("#column" + h).append("<input id='player" + p + "hole" + h +"' type='text' class='hole-input' onchange='updatePlayerTotal(" + p + ")'/>");
+            $("#column" + h).append("<input id='player" + p + "hole" + h +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + p + ")'/>");
         }
+
+        $("#outtotals").append("<div id='player" + p + "outtotal' class='row'></div>");
+        $("#intotals").append("<div id='player" + p + "intotal' class='row'></div>");
+        $(".score-column").append("<div id='player" + p + "scoretotal' class='row'></div>");
+    }
+
+}
+
+function addPlayer(){
+    $("#add-player-button").remove();
+    totalPlayerCount++;
+    numplayers++;
+
+    $(".player-column").append("<div class='row player-name' id='pl" + totalPlayerCount + "'><div class='name-field' contenteditable='true' onchange='validatePlayerNames(this.value)'>Player" + totalPlayerCount + "</div><span class='glyphicon glyphicon-trash delete-button' aria-hidden='true' onclick='deletePlayer(" + totalPlayerCount + ")' id='delete-button'></span></div>");
+
+    for(let o = 1; o <= numholes.length; o++){
+        $("#column" + o).append("<input id='player" + totalPlayerCount + "hole" + o +"' type='number' class='hole-input' onchange='updatePlayerTotal(" + totalPlayerCount + ")'/>");
+    }
+
+    $("#outtotals").append("<div id='player" + totalPlayerCount + "outtotal' class='row'></div>");
+    $("#intotals").append("<div id='player" + totalPlayerCount + "intotal' class='row'></div>");
+    $(".score-column").append("<div id='player" + totalPlayerCount + "scoretotal' class='row'></div>");
+
+    if(numplayers < 4){
+        $(".player-column").append("<a id='add-player-button'>Add Player +</a>")
     }
 }
 
 function deletePlayer(playerId){
+    numplayers--;
+
     $("#pl" + playerId).remove();
     for(var h=1; h<=numholes.length; h++){
         $("#player" + playerId + "hole" + h).remove();
     }
+
+    $("#player" + playerId + "outtotal").remove();
+    $("#player" + playerId + "intotal").remove();
+    $("#player" + playerId + "scoretotal").remove();
+
+    $(".player-column").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
+
+
 }
 
 function getCoordinatesFromZipCode(){
@@ -129,10 +166,38 @@ function getCoordinatesFromZipCode(){
 
 }
 
-function validatePlayerNames(){
-
+function validatePlayerNames(pName){
+    console.log("beep boop, validatePlayerNames here");
+    console.log(pName);
 }
 
 function updatePlayerTotal(player){
+    console.log("beep boop, updateplayertotal here");
+    console.log(player);
+
+
+    let playerOutTotal = 0;
+    let playerInTotal = 0;
+
+    for (let v = 1; v <= 9; v++){
+        console.log($("#player" + player + "hole"+ v).val());
+        if($("#player" + player + "hole"+ v).val() != "") {
+            playerOutTotal = playerOutTotal + parseInt($("#player" + player + "hole" + v).val());
+            console.log(playerOutTotal);
+        }
+    }
+    $("#player" + player + "outtotal").html(playerOutTotal);
+
+    for (let q = 9; q < 18; q++){
+        if($("#player" + player + "hole"+ q).val() != "") {
+            playerInTotal = playerInTotal + parseInt($("#player" + player + "hole" + q).val());
+        }
+    }
+    $("#player" + player + "intotal").html(playerInTotal);
+
+    $("#player" + player + "scoretotal").html(playerInTotal + playerOutTotal);
+}
+
+function displayScoreMessage(player){
 
 }

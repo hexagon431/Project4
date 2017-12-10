@@ -11,17 +11,24 @@
 }
 .score-column{
     display: flex;
+    margin-left: 90px;
 }
 
 .player-column{
     margin-top: 1px;
     width: 90px;
     text-align: center;
+    border-right: 1px solid black;
+    position: fixed;
 
 }
 
 .score-card{
     display: flex;
+    width: 80%;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
+    background-color: rgba(247, 247, 247, 0.80);
+    overflow: scroll;
 }
 
 body{
@@ -41,13 +48,6 @@ body{
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-
-.score-card{
-    width: 80%;
-    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.54);
-    background-color: rgba(247, 247, 247, 0.80);
-    overflow-x: scroll;
 }
 
 .coord-and-radius{
@@ -110,4 +110,24 @@ score-column input[type=number] {
 
 .hcprow{
     background-color: gold;
+}
+
+.player-name{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    background-color: white;
+}
+
+#add-player-button{
+    height: 26px;
+    border-radius: 3px;
+    background-color: green;
+    color: white;
+}
+
+.name-field{
+    width: 65px;
+    overflow: hidden;
+    white-space: nowrap;
 }

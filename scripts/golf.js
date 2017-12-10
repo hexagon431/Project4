@@ -205,7 +205,6 @@ function validatePlayerNames(player){
 
     for(let z in usedNames){
         if(usedNames[z].playerID != currentPlayer.playerID && usedNames[z].playerName == currentPlayer.playerName){
-            //$(".results").append("<div class='alert alert-danger' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>Name already in use. Please choose a different name.</div>");
             $("#name-in-use").show();
             $("#player" + player + "name").attr("tabindex", -1).focus();
         }
@@ -228,7 +227,7 @@ function updatePlayerTotal(player){
     }
     $("#player" + player + "outtotal").html(playerOutTotal);
 
-    for (let q = 9; q <= 18; q++){
+    for (let q = 10; q <= 18; q++){
         if($("#player" + player + "hole"+ q).val() != "") {
             playerInTotal = playerInTotal + parseInt($("#player" + player + "hole" + q).val());
             isGameComplete = true;

@@ -142,6 +142,7 @@ function deletePlayer(playerId){
 
 function getCoordinatesFromZipCode(){
     $("#ziperror").hide();
+    $("#raderror").hide();
 
     var zip = $("#zip").val();
     var rad = Number($("#radius").val());
@@ -149,20 +150,37 @@ function getCoordinatesFromZipCode(){
     //convert from miles to kilometers
     rad = rad * 1.609344;
 
-    if (zip > 10000 && zip < 99999 && zip != null && rad != null){
+    if (zip > 10000 && zip < 99999 && zip != 0 && rad != 0){
         $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + zip + "&key=AIzaSyD_NPHIrLEEXMzX6539FOKx_1WSBkd8zVI", function(data, status){
-            console.log(data);
+            if(status == "OK") {
+                console.log(data);
 
-            var lat = data.results[0].geometry.location.lat;
-            var lng = data.results[0].geometry.location.lng;
+                var lat = data.results[0].geometry.location.lat;
+                var lng = data.results[0].geometry.location.lng;
 
-            local_obj = {latitude: lat, longitude: lng, radius: rad};
-            loadCourses();
+                local_obj = {latitude: lat, longitude: lng, radius: rad};
+                loadCourses();
+            }
+            else{
+                $("#ziperror").show();
+            }
         });
     }
     else{
-        $("#ziperror").show();
+        if(zip == 0 && rad == 0){
+            $("#ziperror").show();
+            $("#raderror").show();
+        }
+        else if(rad == 0){
+            $("#raderror").show();
+        }
+        else{
+            $("#ziperror").show();
+        }
+
     }
+
+
 
 }
 

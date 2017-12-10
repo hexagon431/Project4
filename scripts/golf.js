@@ -126,7 +126,7 @@ function addPlayer(){
     $(".score-total").append("<div id='player" + totalPlayerCount + "scoretotal' class='row'></div>");
 
     if(numplayers < 4){
-        $(".player-column").append("<a id='add-player-button'>Add Player +</a>")
+        $(".player-column").append("<a id='add-player-button' onclick='addPlayer()'>Add Player +</a>")
     }
 
     let currentPlayer = {playerID: totalPlayerCount, playerName: $("#player" + totalPlayerCount + "name").text()};
@@ -135,6 +135,8 @@ function addPlayer(){
 }
 
 function deletePlayer(playerId){
+    $("#add-player-button").remove();
+
     numplayers--;
 
     $("#pl" + playerId).remove();

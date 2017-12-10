@@ -110,18 +110,22 @@ score-column input[type=number] {
 
 .holerow{
     background-color: green;
+    color: white;
 }
 
 .parrow{
     background-color: maroon;
+    color: white;
 }
 
 .yardrow{
     background-color: #1b6d85;
+    color: white;
 }
 
 .hcprow{
-    background-color: gold;
+    background-color: darkmagenta;
+    color: white;
 }
 
 .player-name{
